@@ -1,4 +1,5 @@
 const userServices = require("../services/user.service");
+const mongoose = require("mongoose");
 
 async function create(req, res) {
   const { name, email, password, userName, avatar, background } = req.body;
@@ -30,4 +31,15 @@ async function getAll(req, res) {
   res.send(users);
 }
 
-module.exports = { create, getAll };
+async function getUsersById(req, res) {
+  const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id))
+    return res.status(400).send("Invalid id");
+  
+  const user = await userServices.getUsersById(id);
+  if (!user) return res.status(400).send("User not found");
+
+  res.send(user);
+}
+
+module.exports = { create, getAll, getUsersById };
