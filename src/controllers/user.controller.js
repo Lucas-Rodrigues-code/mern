@@ -16,11 +16,18 @@ async function create(req, res) {
   ) {
     return res.status(400).send("Invalid email");
   }
-  
+
   const user = await userServices.create(req.body);
   if (!user) return res.status(400).send("Error creating user");
 
   res.send({ user });
 }
 
-module.exports = { create };
+async function getAll(req, res) {
+  const users = await userServices.getAll();
+  if (!users) return res.status(400).send("Users not found");
+
+  res.send(users);
+}
+
+module.exports = { create, getAll };

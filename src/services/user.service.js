@@ -4,6 +4,11 @@ function create(body) {
   return User.create(body);
 }
 
+function getAll() {
+  return User.find();
+}
+
 module.exports = {
   create,
+  getAll,
 };
