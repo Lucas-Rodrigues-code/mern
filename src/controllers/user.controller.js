@@ -1,5 +1,4 @@
 const userServices = require("../services/user.service");
-const mongoose = require("mongoose");
 
 async function create(req, res) {
   const { name, email, password, userName, avatar, background } = req.body;
@@ -32,14 +31,30 @@ async function getAll(req, res) {
 }
 
 async function getUsersById(req, res) {
-  const { id } = req.params;
-  if (!mongoose.Types.ObjectId.isValid(id))
-    return res.status(400).send("Invalid id");
-  
-  const user = await userServices.getUsersById(id);
-  if (!user) return res.status(400).send("User not found");
+  const { user } = req;
 
   res.send(user);
 }
 
-module.exports = { create, getAll, getUsersById };
+async function update(req, res) {
+  const { name, email, password, userName, avatar, background } = req.body;
+  
+  if (!name && !userName && !email && !password && !avatar && !background) {
+    return res.status(400).send("one or more fields are required");
+  }
+
+  const { id } = req;
+  
+  await userServices.updateService({
+    id,
+    name,
+    email,
+    password,
+    userName,
+    avatar,
+    background,
+  });
+  res.send({ message: "User updated" });
+}
+
+module.exports = { create, getAll, getUsersById, update };
