@@ -12,7 +12,7 @@ async function create(req, res) {
       title,
       text,
       banner,
-      user: { _id: "66c4aa02b85478d5cc99b767" },
+      user: req.userId,
     });
 
     if (!news) return res.status(400).send("Error creating news");

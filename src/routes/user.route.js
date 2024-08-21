@@ -1,12 +1,19 @@
 import express from "express";
 import userController from "../controllers/user.controller.js";
 import { validId, validUser } from "../middlewares/global.middlewares.js";
+import authMiddleware from "../middlewares/auth.middleware.js";
 
 const route = express.Router();
 
 route.post("/", userController.create);
-route.get("/", userController.getAll);
-route.get("/:id", validId, validUser, userController.getUsersById);
-route.patch("/:id", validId, validUser, userController.update);
+route.get("/", authMiddleware, userController.getAll);
+route.get(
+  "/:id",
+  validId,
+  validUser,
+  authMiddleware,
+  userController.getUsersById
+);
+route.patch("/:id", validId, validUser, authMiddleware, userController.update);
 
 export default route;
