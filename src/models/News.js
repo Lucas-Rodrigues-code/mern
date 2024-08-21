@@ -1,5 +1,3 @@
-import req from "express/lib/request";
-import { type } from "express/lib/response";
 import mongoose from "mongoose";
 
 const NewsSchema = new mongoose.Schema({
