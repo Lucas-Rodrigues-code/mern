@@ -20,4 +20,14 @@ function getTopNewService() {
   return News.findOne().sort({ _id: -1 }).populate("user");
 }
 
-export { createService, getAllService, ContNewsService, getTopNewService };
+function getNewsByIdService(id) {
+  return News.findById(id).sort({ _id: -1 }).populate("user");
+}
+
+export {
+  createService,
+  getAllService,
+  ContNewsService,
+  getTopNewService,
+  getNewsByIdService,
+};
