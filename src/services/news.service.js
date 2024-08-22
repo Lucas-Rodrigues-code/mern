@@ -4,8 +4,16 @@ function createService(body) {
   return News.create(body);
 }
 
-function getAllService() {
-  return News.find();
+function getAllService(limit, offset) {
+  return News.find()
+    .sort({ _id: -1 })
+    .skip(offset)
+    .limit(limit)
+    .populate("user");
 }
 
-export { createService, getAllService };
+function ContNewsService() {
+  return News.countDocuments();
+}
+
+export { createService, getAllService, ContNewsService };
