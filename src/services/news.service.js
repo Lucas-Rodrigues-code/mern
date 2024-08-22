@@ -16,4 +16,8 @@ function ContNewsService() {
   return News.countDocuments();
 }
 
-export { createService, getAllService, ContNewsService };
+function getTopNewService() {
+  return News.findOne().sort({ _id: -1 }).populate("user");
+}
+
+export { createService, getAllService, ContNewsService, getTopNewService };

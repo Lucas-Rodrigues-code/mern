@@ -2,6 +2,7 @@ import {
   getAllService,
   createService,
   ContNewsService,
+  getTopNewService,
 } from "../services/news.service.js";
 
 async function create(req, res) {
@@ -80,4 +81,27 @@ async function getAll(req, res) {
   }
 }
 
-export { create, getAll };
+async function topNews(req, res) {
+  try {
+    const news = await getTopNewService();
+
+    res.send({
+      topNew: {
+        id: news._id,
+        title: news.title,
+        text: news.text,
+        banner: news.banner,
+        likes: news.likes,
+        comments: news.comments,
+        name: news.user.name,
+        userName: news.user.name,
+        userAvatar: news.user.avatar,
+      },
+    });
+  } catch (error) {
+    console.error(error, "Error getting top news");
+    res.status(500).send("Internal server error");
+  }
+}
+
+export { create, getAll, topNews };
