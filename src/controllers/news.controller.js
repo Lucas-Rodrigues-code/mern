@@ -4,6 +4,7 @@ import {
   ContNewsService,
   getTopNewService,
   getNewsByIdService,
+  getNewsByTitleService,
 } from "../services/news.service.js";
 
 async function create(req, res) {
@@ -132,4 +133,33 @@ async function getNewsById(req, res) {
   }
 }
 
-export { create, getAll, topNews, getNewsById };
+async function getNewsByTitle(req, res) {
+  try {
+    const { title } = req.query;
+
+    const news = await getNewsByTitleService(title);
+
+    if (!news || news.length === 0)
+      return res.status(400).send("News not found");
+
+    res.send({
+      results: news.map((newsItem) => {
+        return {
+          id: newsItem._id,
+          title: newsItem.title,
+          text: newsItem.text,
+          banner: newsItem.banner,
+          likes: newsItem.likes,
+          comments: newsItem.comments,
+          name: newsItem.user.name,
+          userName: newsItem.user.name,
+          userAvatar: newsItem.user.avatar,
+        };
+      }),
+    });
+  } catch (error) {
+    console.error(error, "Error getting by title");
+    res.status(500).send("Internal server error");
+  }
+}
+export { create, getAll, topNews, getNewsById, getNewsByTitle };

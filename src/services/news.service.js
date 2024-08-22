@@ -24,10 +24,17 @@ function getNewsByIdService(id) {
   return News.findById(id).sort({ _id: -1 }).populate("user");
 }
 
+function getNewsByTitleService(title) {
+  return News.find({ title: { $regex: title, $options: "i" } })
+    .sort({ _id: -1 })
+    .populate("user");
+}
+
 export {
   createService,
   getAllService,
   ContNewsService,
   getTopNewService,
   getNewsByIdService,
+  getNewsByTitleService,
 };
