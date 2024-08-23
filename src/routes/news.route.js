@@ -4,6 +4,7 @@ import {
   getAll,
   getNewsById,
   getNewsByTitle,
+  getNewsByUser,
   topNews,
 } from "../controllers/news.controller.js";
 import authMiddleware from "../middlewares/auth.middleware.js";
@@ -16,5 +17,6 @@ route.get("/", authMiddleware, getAll);
 route.get("/top", authMiddleware, topNews);
 route.get("/search", authMiddleware, getNewsByTitle);
 route.get("/:id", validId, authMiddleware, getNewsById);
+route.get("/by/user", authMiddleware, getNewsByUser);
 
 export default route;

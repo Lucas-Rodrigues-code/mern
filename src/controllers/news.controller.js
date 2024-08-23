@@ -5,6 +5,7 @@ import {
   getTopNewService,
   getNewsByIdService,
   getNewsByTitleService,
+  getNewsByUserService,
 } from "../services/news.service.js";
 
 async function create(req, res) {
@@ -162,4 +163,34 @@ async function getNewsByTitle(req, res) {
     res.status(500).send("Internal server error");
   }
 }
-export { create, getAll, topNews, getNewsById, getNewsByTitle };
+
+async function getNewsByUser(req, res) {
+  try {
+    const { _id } = req.userId;
+
+    const news = await getNewsByUserService(_id);
+
+    if (!news || news.length === 0)
+      return res.status(400).send("News not found");
+
+    res.send({
+      results: news.map((newsItem) => {
+        return {
+          id: newsItem._id,
+          title: newsItem.title,
+          text: newsItem.text,
+          banner: newsItem.banner,
+          likes: newsItem.likes,
+          comments: newsItem.comments,
+          name: newsItem.user.name,
+          userName: newsItem.user.name,
+          userAvatar: newsItem.user.avatar,
+        };
+      }),
+    });
+  } catch (error) {
+    console.error(error, "Error getting by user");
+    res.status(500).send("Internal server error");
+  }
+}
+export { create, getAll, topNews, getNewsById, getNewsByTitle, getNewsByUser };
