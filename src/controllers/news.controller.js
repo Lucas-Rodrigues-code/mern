@@ -6,6 +6,7 @@ import {
   getNewsByIdService,
   getNewsByTitleService,
   getNewsByUserService,
+  updateService,
 } from "../services/news.service.js";
 
 async function create(req, res) {
@@ -193,4 +194,37 @@ async function getNewsByUser(req, res) {
     res.status(500).send("Internal server error");
   }
 }
-export { create, getAll, topNews, getNewsById, getNewsByTitle, getNewsByUser };
+
+async function update(req, res) {
+  try {
+    const { title, text, banner } = req.body;
+    const { id } = req.params;
+
+    if (!title && !text && !banner) {
+      return res
+        .status(400)
+        .send({ message: "At least one field is required" });
+    }
+
+    const news = await getNewsByIdService(id);
+
+    if (news.user._id.toString() !== req.userId.toString()) {
+      return res.status(401).send({ message: "unauthorizxfsde" });
+    }
+
+    const update = await updateService(id, title, text, banner);
+    res.send({ message: "News updated", update });
+  } catch (error) {
+    console.error(error, "Error getting by user");
+    res.status(500).send("Internal server error");
+  }
+}
+export {
+  create,
+  getAll,
+  topNews,
+  getNewsById,
+  getNewsByTitle,
+  getNewsByUser,
+  update,
+};

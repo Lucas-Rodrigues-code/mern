@@ -34,6 +34,14 @@ function getNewsByUserService(id) {
   return News.find({ user: id }).sort({ _id: -1 }).populate("user");
 }
 
+function updateService(id, title, text, banner) {
+  return News.findOneAndUpdate(
+    { _id: id },
+    { title, text, banner },
+    { new: true }
+  );
+}
+
 export {
   createService,
   getAllService,
@@ -42,4 +50,5 @@ export {
   getNewsByIdService,
   getNewsByTitleService,
   getNewsByUserService,
+  updateService,
 };
