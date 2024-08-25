@@ -1,6 +1,7 @@
 import express from "express";
 import {
   create,
+  deleteNews,
   getAll,
   getNewsById,
   getNewsByTitle,
@@ -20,4 +21,5 @@ route.get("/search", authMiddleware, getNewsByTitle);
 route.get("/:id", validId, authMiddleware, getNewsById);
 route.get("/by/user", authMiddleware, getNewsByUser);
 route.patch("/:id", validId, authMiddleware, update);
+route.delete("/:id", validId, authMiddleware, deleteNews);
 export default route;

@@ -7,6 +7,7 @@ import {
   getNewsByTitleService,
   getNewsByUserService,
   updateService,
+  deleteNewsService,
 } from "../services/news.service.js";
 
 async function create(req, res) {
@@ -209,13 +210,32 @@ async function update(req, res) {
     const news = await getNewsByIdService(id);
 
     if (news.user._id.toString() !== req.userId.toString()) {
-      return res.status(401).send({ message: "unauthorizxfsde" });
+      return res.status(401).send({ message: "unauthorized" });
     }
 
     const update = await updateService(id, title, text, banner);
     res.send({ message: "News updated", update });
   } catch (error) {
     console.error(error, "Error getting by user");
+    res.status(500).send("Internal server error");
+  }
+}
+
+async function deleteNews(req, res) {
+  try {
+    const { id } = req.params;
+
+    const news = await getNewsByIdService(id);
+    if (!news) return res.status(400).send({ message: "News not found" });
+
+    if (news.user._id.toString() !== req.userId.toString()) {
+      return res.status(401).send({ message: "unauthorized" });
+    }
+
+    const deleteNew = await deleteNewsService(id);
+    res.send({ message: "News delete", deleteNew });
+  } catch (error) {
+    console.error(error, "Error delete news");
     res.status(500).send("Internal server error");
   }
 }
@@ -227,4 +247,5 @@ export {
   getNewsByTitle,
   getNewsByUser,
   update,
+  deleteNews,
 };

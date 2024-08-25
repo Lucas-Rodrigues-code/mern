@@ -42,6 +42,10 @@ function updateService(id, title, text, banner) {
   );
 }
 
+function deleteNewsService(id) {
+  return News.findByIdAndDelete({ _id: id });
+}
+
 export {
   createService,
   getAllService,
@@ -51,4 +55,5 @@ export {
   getNewsByTitleService,
   getNewsByUserService,
   updateService,
+  deleteNewsService,
 };
