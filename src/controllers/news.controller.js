@@ -8,6 +8,8 @@ import {
   getNewsByUserService,
   updateService,
   deleteNewsService,
+  likeNewsService,
+  deleteLikeNewsService,
 } from "../services/news.service.js";
 
 async function create(req, res) {
@@ -239,6 +241,25 @@ async function deleteNews(req, res) {
     res.status(500).send("Internal server error");
   }
 }
+
+async function likeNews(req, res) {
+  try {
+    const { id } = req.params;
+    const { userId } = req;
+
+    const likeNews = await likeNewsService(id, userId.toString());
+
+    if (!likeNews) {
+      await deleteLikeNewsService(id, userId.toString());
+      return res.send({ message: "Like removed" });
+    }
+
+    res.send({ message: "Liked news" });
+  } catch (error) {
+    console.error(error, "Error getting by user");
+    res.status(500).send("Internal server error");
+  }
+}
 export {
   create,
   getAll,
@@ -248,4 +269,5 @@ export {
   getNewsByUser,
   update,
   deleteNews,
+  likeNews,
 };

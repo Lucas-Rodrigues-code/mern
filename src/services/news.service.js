@@ -46,6 +46,19 @@ function deleteNewsService(id) {
   return News.findByIdAndDelete({ _id: id });
 }
 
+function likeNewsService(idNews, userId) {
+  return News.findOneAndUpdate(
+    { _id: idNews, "likes.userId": { $nin: [userId] } },
+    { $push: { likes: { userId, createAt: new Date() } } }
+  );
+}
+
+function deleteLikeNewsService(idNews, userId) {
+  return News.findOneAndUpdate(
+    { _id: idNews },
+    { $pull: { likes: { userId } } }
+  );
+}
 export {
   createService,
   getAllService,
@@ -56,4 +69,6 @@ export {
   getNewsByUserService,
   updateService,
   deleteNewsService,
+  likeNewsService,
+  deleteLikeNewsService,
 };
