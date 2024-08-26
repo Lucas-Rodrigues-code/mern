@@ -1,6 +1,8 @@
 import express from "express";
 import {
+  addComment,
   create,
+  deleteComment,
   deleteNews,
   getAll,
   getNewsById,
@@ -24,4 +26,6 @@ route.get("/by/user", authMiddleware, getNewsByUser);
 route.patch("/:id", validId, authMiddleware, update);
 route.delete("/:id", validId, authMiddleware, deleteNews);
 route.patch("/like/:id", validId, authMiddleware, likeNews);
+route.patch("/comments/:id", validId, authMiddleware, addComment);
+route.patch("/comments/:id/:idComment", validId, authMiddleware, deleteComment);
 export default route;

@@ -10,6 +10,8 @@ import {
   deleteNewsService,
   likeNewsService,
   deleteLikeNewsService,
+  addCommentService,
+  deleteCommentService,
 } from "../services/news.service.js";
 
 async function create(req, res) {
@@ -260,6 +262,55 @@ async function likeNews(req, res) {
     res.status(500).send("Internal server error");
   }
 }
+
+async function addComment(req, res) {
+  try {
+    const { id } = req.params;
+    const { userId } = req;
+
+    const { comment } = req.body;
+
+    if (!comment)
+      return res.status(400).send({ message: "comment is required" });
+
+    await addCommentService(id, comment, userId.toString());
+
+    res.send({ message: "comment success" });
+  } catch (error) {
+    console.error(error, "Error comment news");
+    res.status(500).send("Internal server error");
+  }
+}
+
+async function deleteComment(req, res) {
+  try {
+    const { id, idComment } = req.params;
+    const { userId } = req;
+
+    const commentDeleted = await deleteCommentService(
+      id,
+      idComment,
+      userId.toString()
+    );
+
+    const commentFinder = commentDeleted.comments.find(
+      (comment) => comment.idComment.toString() === idComment
+    );
+
+    if (!commentFinder)
+      return res.status(400).send({ message: "comment not found" });
+
+    if (commentFinder.userId !== userId.toString())
+      return res
+        .status(400)
+        .send({ message: "you cant't delete this comment" });
+
+    res.send({ message: "comment delete success" });
+  } catch (error) {
+    console.error(error, "Error comment news");
+    res.status(500).send("Internal server error");
+  }
+}
 export {
   create,
   getAll,
@@ -270,4 +321,6 @@ export {
   update,
   deleteNews,
   likeNews,
+  addComment,
+  deleteComment,
 };

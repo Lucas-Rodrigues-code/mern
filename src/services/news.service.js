@@ -59,6 +59,32 @@ function deleteLikeNewsService(idNews, userId) {
     { $pull: { likes: { userId } } }
   );
 }
+
+function addCommentService(idNews, comment, userId) {
+  let idComment = Math.floor(Date.now() * Math.random()).toString();
+  return News.findOneAndUpdate(
+    { _id: idNews },
+    {
+      $push: { comments: { idComment, userId, comment, createAt: new Date() } },
+    }
+  );
+}
+
+function deleteCommentService(idNews, idComment, userId) {
+  return News.findOneAndUpdate(
+    {
+      _id: idNews,
+    },
+    {
+      $pull: {
+        comments: {
+          idComment: idComment,
+          userId: userId,
+        },
+      },
+    }
+  );
+}
 export {
   createService,
   getAllService,
@@ -71,4 +97,6 @@ export {
   deleteNewsService,
   likeNewsService,
   deleteLikeNewsService,
+  addCommentService,
+  deleteCommentService,
 };
