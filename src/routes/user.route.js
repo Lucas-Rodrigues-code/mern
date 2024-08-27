@@ -17,3 +17,19 @@ route.get(
 route.patch("/:id", validId, validUser, authMiddleware, userController.update);
 
 export default route;
+
+/* "/user": {},
+    "/user/{id}/": {},
+    "/user/{id}": {},
+    "/auth": {},
+    "news/": {},
+    "news": {},
+    "news/top": {},
+    "news/search": {},
+    "news/byUser": {},
+    "news/{id}/": {},
+    "news/{id}": {},
+    "news/{id}/": {},
+    "news/{id}/like/{id}": {},
+    "news/{id}/comment/{id}": {},
+    "news/{id}/comment/{idNews}/{idComment}": {} */
