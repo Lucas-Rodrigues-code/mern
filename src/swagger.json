@@ -43,8 +43,9 @@
         },
         "responses": {
           "400": {
-            "description": "Not Found"
+            "description": "Bad Request"
           },
+
           "201": {
             "description": "Created",
             "content": {

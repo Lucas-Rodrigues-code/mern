@@ -5,7 +5,9 @@ async function create(req, res) {
     const { name, email, password, userName, avatar, background } = req.body;
 
     if (!name || !userName || !email || !password || !avatar || !background) {
-      return res.status(400).send("Missing required fields for user creation");
+      return res
+        .status(400)
+        .send({ message: "Missing required fields for user creation" });
     }
 
     if (
@@ -15,16 +17,20 @@ async function create(req, res) {
           /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         )
     ) {
-      return res.status(400).send("Invalid email");
+      return res.status(400).send({ message: "Invalid email" });
     }
 
+    const emailExists = await userServices.getUsersByEmail(email);
+    if (emailExists)
+      return res.status(400).send({ message: "Email already exists" });
+
     const user = await userServices.create(req.body);
-    if (!user) return res.status(400).send("Error creating user");
+    if (!user) return res.status(400).send({ message: "Error creating user" });
 
     res.send({ user });
   } catch (error) {
     console.error(error, "Error creating user");
-    res.status(500).send("Internal server error");
+    res.status(500).send({ message: "Internal server error", error });
   }
 }
 

@@ -34,9 +34,14 @@ function updateService({
   );
 }
 
+function getUsersByEmail(email) {
+  return User.findOne({ email });
+}
+
 export default {
   create,
   getAll,
   getUsersById,
   updateService,
+  getUsersByEmail,
 };
