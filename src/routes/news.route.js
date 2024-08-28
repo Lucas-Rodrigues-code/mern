@@ -17,14 +17,15 @@ import { validId } from "../middlewares/global.middlewares.js";
 
 const route = express.Router();
 
-route.post("/", authMiddleware, create);
-route.get("/", authMiddleware, getAll);
-route.get("/top", authMiddleware, topNews);
-route.get("/search", authMiddleware, getNewsByTitle);
-route.get("/:id", validId, authMiddleware, getNewsById);
+route.post("/create", authMiddleware, create);
+route.get("/", getAll);
+route.get("/top", topNews);
+route.get("/search", getNewsByTitle);
+route.get("/:id", validId, getNewsById);
 route.get("/by/user", authMiddleware, getNewsByUser);
-route.patch("/:id", validId, authMiddleware, update);
-route.delete("/:id", validId, authMiddleware, deleteNews);
+
+route.patch("/update/:id", validId, authMiddleware, update);
+route.delete("/delete/:id", validId, authMiddleware, deleteNews);
 route.patch("/like/:id", validId, authMiddleware, likeNews);
 route.patch("/comments/:id", validId, authMiddleware, addComment);
 route.patch("/comments/:id/:idComment", validId, authMiddleware, deleteComment);

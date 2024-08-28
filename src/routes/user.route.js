@@ -14,7 +14,7 @@ route.get(
   authMiddleware,
   userController.getUsersById
 );
-route.patch("/:id", validId, validUser, authMiddleware, userController.update);
+route.patch("/update/:id", validId, validUser, authMiddleware, userController.update);
 
 export default route;
 
